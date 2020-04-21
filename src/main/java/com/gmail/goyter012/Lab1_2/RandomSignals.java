@@ -1,6 +1,7 @@
 package com.gmail.goyter012.Lab1_2;
 
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +18,7 @@ public class RandomSignals {
     }
 
     private ArrayList<Double> generateList(int min, int max) {
-        ArrayList<Double> list = new ArrayList<Double>(n);
+        ArrayList<Double> list = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             list.add((double) (min + (int) (Math.random() * max)));
         }
@@ -25,7 +26,7 @@ public class RandomSignals {
     }
 
     private ArrayList<Double> generateFreq() {
-        ArrayList<Double> freq = new ArrayList<Double>();
+        ArrayList<Double> freq = new ArrayList<>();
         int step = omega / n;
         for (int i = 0; i < n; i++) {
             freq.add((double) (omega - step * i));
@@ -57,7 +58,7 @@ public class RandomSignals {
                 x[i] += a.get(j) * Math.sin(freq.get(j) * i + alpha.get(j));
             }
         }
-        return new ArrayList<Double>(Arrays.asList(x));
+        return new ArrayList<>(Arrays.asList(x));
     }
 
     private void drawGraphics(ArrayList<Double> x, ArrayList<Double> y) {
@@ -73,11 +74,12 @@ public class RandomSignals {
         ArrayList<Double> y = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
         double mx = generateMathematicalExpectation(x);
         double my = generateMathematicalExpectation(y);
-        System.out.println("mx: " + mx);
-        System.out.println("my: " + my);
-        System.out.println("dx: " + generateDispersion(x, mx));
-        System.out.println("dy: " + generateDispersion(y, my));
-
+        JOptionPane.showMessageDialog(null,
+                "Mx: " + mx + "\n" +
+                        "My: " + my + "\n" +
+                        "Dx: " + generateDispersion(x, mx) + "\n" +
+                        "Dy: " + generateDispersion(y, my) + "\n"
+        );
         drawGraphics(x, y);
 
 
