@@ -1,5 +1,7 @@
 package com.gmail.goyter012.Lab1_2;
 
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,7 +16,7 @@ public class RandomSignals {
         this.omega = omega;
     }
 
-    private ArrayList<Double> listGenerator(int min, int max) {
+    private ArrayList<Double> generateList(int min, int max) {
         ArrayList<Double> list = new ArrayList<Double>(n);
         for (int i = 0; i < n; i++) {
             list.add((double) (min + (int) (Math.random() * max)));
@@ -31,7 +33,7 @@ public class RandomSignals {
         return freq;
     }
 
-    private double mExpectation(ArrayList<Double> line) {
+    private double generateMathematicalExpectation(ArrayList<Double> line) {
         double expectation = 0;
         for (int i = 0; i < nLarge; i++) {
             expectation += line.get(i);
@@ -39,7 +41,7 @@ public class RandomSignals {
         return expectation / nLarge;
     }
 
-    private double dispersion(ArrayList<Double> line, double mExpectation) {
+    private double generateDispersion(ArrayList<Double> line, double mExpectation) {
         double dispersion = 0;
         for (int i = 0; i < nLarge; i++) {
             dispersion += Math.pow(line.get(i) - mExpectation, 2);
@@ -55,26 +57,28 @@ public class RandomSignals {
                 x[i] += a.get(j) * Math.sin(freq.get(j) * i + alpha.get(j));
             }
         }
-        System.out.println(Arrays.toString(x));
         return new ArrayList<Double>(Arrays.asList(x));
     }
 
-    private void drawFunction() {
-
+    private void drawGraphics(ArrayList<Double> x, ArrayList<Double> y) {
+        EventQueue.invokeLater(() -> {
+            LineChartEx ex = new LineChartEx(x, y);
+            ex.setVisible(true);
+        });
     }
 
 
     public void runFirstLab() {
-        ArrayList<Double> x = generateXt(listGenerator(0, 5), generateFreq(), listGenerator(0, 5));
-        ArrayList<Double> y = generateXt(listGenerator(0, 5), generateFreq(), listGenerator(0, 5));
-        double mx = mExpectation(x);
-        double my = mExpectation(y);
+        ArrayList<Double> x = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
+        ArrayList<Double> y = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
+        double mx = generateMathematicalExpectation(x);
+        double my = generateMathematicalExpectation(y);
         System.out.println("mx: " + mx);
         System.out.println("my: " + my);
-        System.out.println("dx: " + dispersion(x, mx));
-        System.out.println("dy: " + dispersion(y, my));
+        System.out.println("dx: " + generateDispersion(x, mx));
+        System.out.println("dy: " + generateDispersion(y, my));
 
-        drawFunction();
+        drawGraphics(x, y);
 
 
     }
