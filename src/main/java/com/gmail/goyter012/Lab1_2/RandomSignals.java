@@ -61,9 +61,39 @@ public class RandomSignals {
         return new ArrayList<>(Arrays.asList(x));
     }
 
-    private void drawGraphics(ArrayList<Double> x, ArrayList<Double> y) {
+    private ArrayList<Double> generateRxx(ArrayList<Double> x, double mx) {
+        Double[] rxx = new Double[(int) (nLarge / 2) - 1];
+        Arrays.fill(rxx, 0.0);
+        for (int i = 0; i < (int) (nLarge / 2) - 1; i++) {
+            for (int j = 0; j < (int) (nLarge / 2) - 1; j++) {
+                rxx[i] += ((x.get(j) - mx) * (x.get(i + j) - mx)) / (nLarge - 1);
+            }
+        }
+        return new ArrayList<>(Arrays.asList(rxx));
+    }
+
+    private ArrayList<Double> generateRxy(ArrayList<Double> y, double mx, double my) {
+        Double[] rxy = new Double[(int) (nLarge / 2) - 1];
+        Arrays.fill(rxy, 0.0);
+        for (int i = 0; i < (int) (nLarge / 2) - 1; i++) {
+            for (int j = 0; j < (int) (nLarge / 2) - 1; j++) {
+                rxy[i] += ((y.get(j) - mx) * (y.get(j + i) - my)) / (nLarge - 1);
+            }
+        }
+        return new ArrayList<>(Arrays.asList(rxy));
+    }
+
+    private ArrayList<Double> generateYs(int size) {
+        ArrayList<Double> ys = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            ys.add((double) i);
+        }
+        return ys;
+    }
+
+    private void drawGraphics(ArrayList<Double> x, ArrayList<Double> y, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
         EventQueue.invokeLater(() -> {
-            LineChartEx ex = new LineChartEx(x, y);
+            LineChartEx ex = new LineChartEx(x, y, rxx, rxxt, rxy, rxyt);
             ex.setVisible(true);
         });
     }
@@ -74,18 +104,16 @@ public class RandomSignals {
         ArrayList<Double> y = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
         double mx = generateMathematicalExpectation(x);
         double my = generateMathematicalExpectation(y);
+        ArrayList<Double> rxx = generateRxx(x, mx);
+        ArrayList<Double> rxy = generateRxy(y, mx, my);
         JOptionPane.showMessageDialog(null,
                 "Mx: " + mx + "\n" +
                         "My: " + my + "\n" +
                         "Dx: " + generateDispersion(x, mx) + "\n" +
                         "Dy: " + generateDispersion(y, my) + "\n"
         );
-        for(int i = 0; i < nLarge; i++){
-            y.set(i, (double)i);
-        }
-        drawGraphics(x, y);
 
-
+        drawGraphics(x, generateYs(nLarge), rxx, generateYs((int) (nLarge / 2) - 1),rxy, generateYs((int) (nLarge / 2) - 1));
 
     }
 

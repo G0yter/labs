@@ -18,13 +18,13 @@ import java.util.ArrayList;
 
 public class LineChartEx extends JFrame {
 
-    public LineChartEx(ArrayList<Double> x, ArrayList<Double> y) {
-        initUI(x,y);
+    public LineChartEx(ArrayList<Double> x, ArrayList<Double> xt, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
+        initUI(x, xt, rxx, rxxt, rxy, rxyt);
     }
 
-    private void initUI(ArrayList<Double> x, ArrayList<Double> y) {
+    private void initUI(ArrayList<Double> x, ArrayList<Double> xt, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
 
-        XYDataset dataset = createDataset(x, y);
+        XYDataset dataset = createDataset(x, xt, rxx, rxxt, rxy, rxyt);
         JFreeChart chart = createChart(dataset);
 
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -38,16 +38,32 @@ public class LineChartEx extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private XYDataset createDataset(ArrayList<Double> x, ArrayList<Double> y) {
+    private XYDataset createDataset(ArrayList<Double> x, ArrayList<Double> xt, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
 
         XYSeries series = new XYSeries("X(t)");
         for (Double value : x) {
-            for (Double aDouble : y) {
+            for (Double aDouble : xt) {
                 series.add(value, aDouble);
             }
         }
+        XYSeries series1 = new XYSeries("Rxx(t)");
+        for (Double value : rxx) {
+            for (Double aDouble : rxxt) {
+                series1.add(value, aDouble);
+            }
+        }
+        XYSeries series2 = new XYSeries("Rxy(t)");
+        for (Double value : rxy) {
+            for (Double aDouble : rxyt) {
+                series2.add(value, aDouble);
+            }
+        }
+
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+
 
         return dataset;
     }
@@ -70,6 +86,12 @@ public class LineChartEx extends JFrame {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.RED);
         renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+
+        renderer.setSeriesPaint(1, Color.BLUE);
+        renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+
+        renderer.setSeriesPaint(2, Color.GREEN);
+        renderer.setSeriesStroke(2, new BasicStroke(2.0f));
 
         plot.setRenderer(renderer);
         plot.setBackgroundPaint(Color.white);
