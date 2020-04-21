@@ -80,7 +80,11 @@ public class RandomSignals {
                         "Dx: " + generateDispersion(x, mx) + "\n" +
                         "Dy: " + generateDispersion(y, my) + "\n"
         );
+        for(int i = 0; i < nLarge; i++){
+            y.set(i, (double)i);
+        }
         drawGraphics(x, y);
+
 
 
     }
