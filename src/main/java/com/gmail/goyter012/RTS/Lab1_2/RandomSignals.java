@@ -1,5 +1,7 @@
-package com.gmail.goyter012.Lab1_2;
+package com.gmail.goyter012.RTS.Lab1_2;
 
+
+import com.gmail.goyter012.RTS.Lab1_2.LineChartEx;
 
 import javax.swing.*;
 import java.awt.*;

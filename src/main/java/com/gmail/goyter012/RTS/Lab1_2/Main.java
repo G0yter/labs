@@ -1,6 +1,4 @@
-package com.gmail.goyter012;
-
-import com.gmail.goyter012.Lab1_2.RandomSignals;
+package com.gmail.goyter012.RTS.Lab1_2;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.gmail.goyter012.Lab1_2;
+package com.gmail.goyter012.RTS.Lab1_2;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
