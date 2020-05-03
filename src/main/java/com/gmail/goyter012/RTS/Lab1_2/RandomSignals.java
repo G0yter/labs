@@ -102,17 +102,28 @@ public class RandomSignals {
 
 
     public void runFirstLab() {
-        ArrayList<Double> x = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
+        double t1 = System.currentTimeMillis();
+        ArrayList<Double> xForY = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
         ArrayList<Double> y = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
-        double mx = generateMathematicalExpectation(x);
+        double mxForY = generateMathematicalExpectation(xForY);
         double my = generateMathematicalExpectation(y);
+        ArrayList<Double> rxy = generateRxy(y, mxForY, my);
+        double timeForRxy = System.currentTimeMillis() - t1;
+
+        double t = System.currentTimeMillis();
+        ArrayList<Double> x = generateXt(generateList(0, 10), generateFreq(), generateList(0, 10));
+        double mx = generateMathematicalExpectation(x);
         ArrayList<Double> rxx = generateRxx(x, mx);
-        ArrayList<Double> rxy = generateRxy(y, mx, my);
+        double timeForRxx = System.currentTimeMillis() - t;
+
+        System.out.println(timeForRxx);
+        System.out.println(timeForRxy);
         JOptionPane.showMessageDialog(null,
                 "Mx: " + mx + "\n" +
                         "My: " + my + "\n" +
                         "Dx: " + generateDispersion(x, mx) + "\n" +
-                        "Dy: " + generateDispersion(y, my) + "\n"
+                        "Dy: " + generateDispersion(y, my) + "\n" +
+                        (((timeForRxy)/(timeForRxx))*100 - 100) + "% Rxx executes faster than Rxy\n"
         );
 
         drawGraphics(x, generateYs(nLarge), rxx, generateYs((int) (nLarge / 2) - 1),rxy, generateYs((int) (nLarge / 2) - 1));
