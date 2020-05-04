@@ -1,4 +1,4 @@
-package com.gmail.goyter012.RTS.Lab1_2;
+package com.gmail.goyter012.RTS.Lab1_2_3_4;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -18,14 +18,14 @@ import java.util.ArrayList;
 
 public class LineChartEx extends JFrame {
 
-    public LineChartEx(ArrayList<Double> x, ArrayList<Double> xt, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
-        initUI(x, xt, rxx, rxxt, rxy, rxyt);
+    public LineChartEx(ArrayList<Double> x, ArrayList<Double> xt, Paint color, String title, String graphName, String xLabel, String yLabel) {
+        initUI(x, xt, color, title, graphName, xLabel, yLabel);
     }
 
-    private void initUI(ArrayList<Double> x, ArrayList<Double> xt, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
+    private void initUI(ArrayList<Double> x, ArrayList<Double> xt, Paint color, String title, String graphName, String xLabel, String yLabel) {
 
-        XYDataset dataset = createDataset(x, xt, rxx, rxxt, rxy, rxyt);
-        JFreeChart chart = createChart(dataset);
+        XYDataset dataset = createDataset(x, xt, graphName);
+        JFreeChart chart = createChart(dataset, color, title, xLabel, yLabel);
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -33,47 +33,33 @@ public class LineChartEx extends JFrame {
         add(chartPanel);
 
         pack();
-        setTitle("Random signals");
+        setTitle(title);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private XYDataset createDataset(ArrayList<Double> x, ArrayList<Double> xt, ArrayList<Double> rxx, ArrayList<Double> rxxt, ArrayList<Double> rxy, ArrayList<Double> rxyt) {
+    private XYDataset createDataset(ArrayList<Double> x, ArrayList<Double> xt, String graphName) {
 
-        XYSeries series = new XYSeries("X(t)");
+        XYSeries series = new XYSeries(graphName);
         for (Double value : x) {
             for (Double aDouble : xt) {
                 series.add(value, aDouble);
             }
         }
-        XYSeries series1 = new XYSeries("Rxx(t)");
-        for (Double value : rxx) {
-            for (Double aDouble : rxxt) {
-                series1.add(value, aDouble);
-            }
-        }
-        XYSeries series2 = new XYSeries("Rxy(t)");
-        for (Double value : rxy) {
-            for (Double aDouble : rxyt) {
-                series2.add(value, aDouble);
-            }
-        }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
-        dataset.addSeries(series1);
-        dataset.addSeries(series2);
 
 
         return dataset;
     }
 
-    private JFreeChart createChart(XYDataset dataset) {
+    private JFreeChart createChart(XYDataset dataset, Paint color, String title, String xLabel, String yLabel) {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
                 "",
-                "t",
-                "x(t)",
+                xLabel,
+                yLabel,
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -84,14 +70,9 @@ public class LineChartEx extends JFrame {
         XYPlot plot = chart.getXYPlot();
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesPaint(0, Color.RED);
+        renderer.setSeriesPaint(0, color);
         renderer.setSeriesStroke(0, new BasicStroke(2.0f));
 
-        renderer.setSeriesPaint(1, Color.BLUE);
-        renderer.setSeriesStroke(1, new BasicStroke(2.0f));
-
-        renderer.setSeriesPaint(2, Color.GREEN);
-        renderer.setSeriesStroke(2, new BasicStroke(2.0f));
 
         plot.setRenderer(renderer);
         plot.setBackgroundPaint(Color.white);
@@ -104,7 +85,7 @@ public class LineChartEx extends JFrame {
 
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.setTitle(new TextTitle("Random signals",
+        chart.setTitle(new TextTitle(title,
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
         );
