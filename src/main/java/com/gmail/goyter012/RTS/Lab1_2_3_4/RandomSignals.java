@@ -98,8 +98,13 @@ public class RandomSignals {
             double a = 2.0 * Math.PI * k / nLarge;
             Complex factor = new Complex(Math.cos(a), -Math.sin(a));
 
+            int p = nLarge / 2 - 1;
+            if (p >= nLarge / 2) {
+                p += nLarge / 2;
+            }
+
             complexes[k] = Complex.sum(f1, Complex.mul(factor, f2));
-            complexes[k + nLarge / 2] = Complex.diff(f1, Complex.mul(factor, f2));
+            complexes[k + p + 1] = Complex.diff(f1, Complex.mul(factor, f2));
         }
 
         return new ArrayList<>(Arrays.asList(complexes));
